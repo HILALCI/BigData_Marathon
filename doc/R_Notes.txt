@@ -803,5 +803,122 @@ sigma(ml) #RSS==Residual Standart Error gosterir.
 plot(resid(ml)) #Kalintirlari cizdirmek icin
 plot(ml)
 
+library(neuralnet)
+n <- neuralnet(admit~gre + gpa + rank,
+               data = training_data,
+               hidden = 5,
+               err.fct = "ce",
+               linear.output = FALSE,
+               lifesign = 'full',
+               rep = 2,
+               algorithm = "rprop+",
+               stepmax = 100000)
+
 #Verilerin nasil dagildigini gostermek icin scatter.smooth kullandik.
 scatter.smooth(x =veri$Kilo, y=veri$Yas, main ="Kilo ve Yas veri dagilimi")
+
+
+rev() #Reverse tersine cevirme islemi icin
+cat() #Print islemi yapar.
+paste() #Format gibi birlestirme islemi icin.
+#Faktorlerin levelerini alfabetik siraya gore yapiyor.
+factor (level = c('C', 'B' , 'A'))# Bu sekilde kendimiz siralayacabiliriz
+factor (level = c('C', 'B' , 'A'), ordered = TRUE) #Siralanmis sekilde oluyor. C < B < A olarak gosteriyor.
+#ordered oldugunda x > A kontrolunu yapabiliyorum.
+str(factored) #Faktoru structer cevirdigimiz zaman hangi faktore uye olduklarini sirayla gosteriyor.
+#Faktorluyken table ve summary benzer sekilde levellarda kac tane oldugunu gorebiliriz.
+#scan() kullanmak c() kullanmaktan farkli scan() virgul kullamamiza gerek olmadan ayirim yapabiliyor.
+
+cols[-6] #Levellarda kalacak fakat 6. idexi almiyacak.
+droplevels(cols[-6]) #Farki su levellarda 6. indexte kalkacak komple
+
+sample(x= 1:6, size=6, replace= FALSE) #Tekrar etmemesi icin
+sample(x= 1:6, size=50, replace= TRUE) #Tekar edebilmesi icin replace yaptik.
+
+prop.test(x = 10, n = 50, p = 1/6, alt = "buyuk") #Hipotez testi icin kullaniliyor.
+
+#Temel İstatistiksel Operatörler
+max(x) #x’deki en büyük değer
+min(x) #x’deki en küçük değer
+sum(x) #x’deki verilerin toplamı
+mean(x) #x’deki verilerin aritmetik ortalaması
+median(x) #x’deki verilerin medyanı
+range(x) #x’deki verilerin değişim aralığı
+sd(x) #x’deki verilerin standart sapması
+var(x) #x’deki verilerin örneklem varyansı
+mad(x) #x’deki verilerin ortalama sapması
+IQR(x) #x’deki verilerin kartiller arası farkı
+quantile(p,x) #x’deki verilerin p. kantili
+cor(x,y) #x ve y verileri arasındaki korelasyon katsayısı
+sort(x) #x verilerin sıralanması
+rank(x) #x verilerinin sıraları
+quantile(x) #x’in kantilleri
+cumsum(x) #x’in birikimli toplamları
+cumprod(x) #x’in birikimli çarpımları
+cummax(x) #x’in birikimli maksimumu
+cummin(x) #x’in birikimli minimum
+colMeans(x) #x’in bulunduğu sütunun ortalaması
+colSums(x) #x’in bulunduğu sütunun toplamı
+rowMeans(x) #x’in bulunduğu sıranın ortalaması
+rowSums(x) #x’in bulunduğu sıranın toplamı
+#Source:  Şimşek, G. & Karadavut, U. (2014). R Programlama Dili . 21. Yüzyılda Fen ve Teknik , 1 (1) , 7-24 . Retrieved from https://dergipark.org.tr/en/pub/fenveteknik/issue/65319/1006509 
+
+library(psych)
+describe(dosya adı)
+"""
+Bu fonksiyon ile dosyada bulunan tüm değişkenlere ilişkin aritmetik ortalama, ortanca, standart sapma, basıklık ve çarpıklık katsayıları gibi bazı temel betimsel istatistikler üretilir.
+
+Source: Doğan, C. D. & Uluman, M. (2016). İstatistiksel Veri Analizinde R Yazılımı Ve Kullanımı . İlköğretim Online , 15 (2) , 0-0 . DOI: 10.17051/io.2016.24991 
+"""
+shapiro.test((dosya adı $ değişken adı) #Tek değişkenli Normallik Varsayımı
+by(dosya adı $ değişken adı, dosya adı $ grup değişkeninin adı, shapiro.test) #bağımsız örneklemler için t testi hesaplanırken normallik varsayımının alt gruplar için ayrı ayrı test edilmesi icin
+
+library(cluster) #Kumeleme algoritmalari icin
+pam() #K-Medoids icin
+
+kmeans() #K-ortalamalar icin
+#Not: Elbow yöntemi kullanılarak küme sayısı 4 olarak verilebilir.
+#Not: Literatürde genellikle uygulanan ve tavsiye edilen nstart değerleri 20 ve 25’tir.
+kortalama <- kmeans(scale(USArrests), centers = 4, nstart = 20)
+library(factoextra)
+fviz_cluster() #Kümelerin görselleştirilmesi için
+fviz_cluster(kortalama, USArrests, geom = "text") #geom= “point” atanabilir.geom kümelerde yer alan gözlemlerin gösterim şeklini belirtmek icin.
+fviz_nbclust()
+
+library(clValid)
+clValid() 
+"""
+clValid paketi içsel geçerlikte “connectivity”, “dunn” ve “silhouette” olmak üzere üç farklı değer
+hesaplamaktadır. Connectivity değeri 0 ile sonsuz arasında değişirken, bu değer minimize edilmeye
+çalışılmaktadır. Silhouette değeri -1 ile 1 arasında değişirken, 1’e yakın olması kümeleme analizinin içsel
+geçerliği için iyi bir göstergedir. Dunn Index de Connectivity’e benzer değerler almakta ve bu değerde
+hesaplanan yüksek değer iyi bir kümeleme performansı olduğunu göstermektedir.
+
+clValid() fonksiyonunda
+validation parametresine “stability” yazılmış ve bu fonksiyon da stability ismiyle kaydedilmiştir. Sonrasında
+summary() fonksiyonu kullanılarak sonuçlar raporlanmıştır. Sonuçta görülen APN (Average proportion of
+non-overlap) değeri 0-1 arasında değişirken, 0’a yakın değerler kümeleme analizi sonuçlarının tutarlı olduğunu
+göstermektedir. AD (Average distance), ADM (Average distance between means) ve FOM (Figure of merit)
+değerleri 0 ile sonsuz arasında değişirken, küçük değerler tercih edilmektedir.
+
+Source : Gürler, C. (2022). R Programlama Dili ile Kümeleme Analizi . Anadolu Üniversitesi Sosyal Bilimler Dergisi , AÜSBD Sosyal Bilimlerde Araştırma Yöntemleri Özel sayısı , 341-366 . DOI: 10.18037/ausbd.1227364 
+"""
+
+
+#Not factore cevrildiginde level degisince degerlerde degisiyor.Vektor olarak kaldiginda levels degisiyor deger ayni kaliyor.
+
+ggplot(veri, aes(x= boy, fill= cinsiyet) 
+geom_bar(position= "stack")) #stack ile yigin seklinde gostrerir.
+geom_bar(position= "dodge") #yan yan gosterilsin istersen.
+geom_bar(position= position_dodge(preserve="single")) #0 olan degiri gosterir.
+labs(y="Proportion") #Oran olarak y gostermek icin.
+theme_classic() #Arka plan cizgi olmamaisi icin
+theme_stata() #Cizgili ve scale_color_stata("color6") renk verilebilir.
+geom_point() #Nokta gosterimi icin.
+geom_point(color=""blue", size=2, alpha=0.5) #Noktalarin renk boyut ve saydamligni degistirebiliriz.
+scale_y_continuous(label=scales::dolar_format(prefix="TL"))
+#TL olan yere Euro veya TL sembolu ekleniyor.
+labs(title="Baslik", subtitle("Alt Baslik")) #Baslik ve alt baslik labs ile eklenebilir.
+geom_smooth(method="lm") #Dogrusal regresyon egrisini cizdirmek icin
+geom_smooth() #Loess egrisini cizdirmek icin
+geom_smooth(formula=myformul) #Kendi formulunuzu ekleyip onu cizdirmesini sagliyabilirsiniz.
